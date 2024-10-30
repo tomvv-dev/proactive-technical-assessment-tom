@@ -1,0 +1,116 @@
+openapi: 3.0.0
+info:
+  title: Rick and Morty API
+  description: API for Rick and Morty characters
+  version: 1.0.0
+
+paths:
+  /character:
+    get:
+      operationId: listCharacters
+      description: List all characters from the show.
+      summary: List all characters
+      responses:
+        '200':
+          description: A list of characters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCharacter'
+
+  /character/{id}:
+    get:
+      summary: Get character details
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The character ID
+      responses:
+        '200':
+          description: Character details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Character'
+
+components:
+  schemas:
+    PaginatedCharacter:
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            count:
+              type: integer
+              description: The total number of characters
+            pages:
+              type: integer
+              description: The total number of pages
+            next:
+              type: string
+              description: The URL of the next page
+            prev:
+              type: string
+              description: The URL of the previous page
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Character'
+    Character:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The character ID
+        name:
+          type: string
+          description: The character name
+        status:
+          type: string
+          description: The character status (e.g., Alive, Dead, Unknown)
+        species:
+          type: string
+          description: The character species
+        type:
+          type: string
+          description: The character type (if any)
+        gender:
+          type: string
+          description: The character gender
+        origin:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the origin location
+            url:
+              type: string
+              description: The URL of the origin location
+        location:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the current location
+            url:
+              type: string
+              description: The URL of the current location
+        image:
+          type: string
+          description: The URL of the character image
+        episode:
+          type: array
+          items:
+            type: string
+          description: List of episodes in which the character appeared
+        url:
+          type: string
+          description: The URL of the character's own endpoint
+        created:
+          type: string
+          format: date-time
+          description: The time at which the character was created
